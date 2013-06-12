@@ -36,6 +36,13 @@ namespace QuantLib {
     Integer sessionId();
     #endif
 
+    /* This allows installing a function to provide the sessionId. If
+       not such function is set the default will be used, which is to
+       use a single session everywhere.
+    */
+    typedef Integer (*sessionIdFunc)();
+    void setSessionIdFunc(sessionIdFunc func);
+    
     // this is required on VC++ (with a slightly different syntax depending
     // on the compiler version) when CLR support is enabled
     #if defined(QL_PATCH_MSVC71)
@@ -69,22 +76,22 @@ namespace QuantLib {
         static T& instance();
       protected:
         Singleton() {}
+        static boost::shared_ptr<void> create() {
+            return boost::static_pointer_cast<void>(
+                boost::shared_ptr<T>(new T));
+        }
     };
 
+    void* SingletonInstanceLoader(
+                       std::map<Integer,boost::shared_ptr<void> > & instances,
+                       boost::shared_ptr<void> (*newFunc)() );
+        
     // template definitions
 
     template <class T>
     T& Singleton<T>::instance() {
-        static std::map<Integer, boost::shared_ptr<T> > instances_;
-        #if defined(QL_ENABLE_SESSIONS)
-        Integer id = sessionId();
-        #else
-        Integer id = 0;
-        #endif
-        boost::shared_ptr<T>& instance = instances_[id];
-        if (!instance)
-            instance = boost::shared_ptr<T>(new T);
-        return *instance;
+        static std::map<Integer, boost::shared_ptr<void> > instances_;
+        return *static_cast<T*>(SingletonInstanceLoader(instances_, &create));
     }
 
     // reverts the change above

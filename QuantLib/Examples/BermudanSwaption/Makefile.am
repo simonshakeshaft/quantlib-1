@@ -8,7 +8,7 @@ else
 noinst_PROGRAMS = BermudanSwaption
 endif
 BermudanSwaption_SOURCES = BermudanSwaption.cpp
-BermudanSwaption_LDADD = ../../ql/libQuantLib.la
+BermudanSwaption_LDADD = ../../ql/libQuantLib.la -lboost_system
 
 EXTRA_DIST = \
     BermudanSwaption.dev \

@@ -8,7 +8,7 @@ else
 noinst_PROGRAMS = CallableBonds
 endif
 CallableBonds_SOURCES = CallableBonds.cpp
-CallableBonds_LDADD = ../../ql/libQuantLib.la
+CallableBonds_LDADD = ../../ql/libQuantLib.la -lboost_system
 
 EXTRA_DIST = \
     CallableBonds.dev \
