@@ -77,4 +77,10 @@
 //#   define QL_ENABLE_SESSIONS
 #endif
 
+/* Define this to have each thread use a different session. In that 
+   case, the sessionId() function is not needed. */
+#ifndef QL_ENABLE_TSS
+//#   define QL_ENABLE_TSS
+#endif
+
 #endif

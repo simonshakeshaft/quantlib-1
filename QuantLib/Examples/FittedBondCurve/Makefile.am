@@ -8,7 +8,7 @@ else
 noinst_PROGRAMS = FittedBondCurve
 endif
 FittedBondCurve_SOURCES = FittedBondCurve.cpp
-FittedBondCurve_LDADD = ../../ql/libQuantLib.la
+FittedBondCurve_LDADD = ../../ql/libQuantLib.la -lboost_thread
 
 EXTRA_DIST = \
     FittedBondCurve.dev \

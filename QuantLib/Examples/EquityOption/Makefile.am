@@ -8,7 +8,7 @@ else
 noinst_PROGRAMS = EquityOption
 endif
 EquityOption_SOURCES = EquityOption.cpp
-EquityOption_LDADD = ../../ql/libQuantLib.la
+EquityOption_LDADD = ../../ql/libQuantLib.la -lboost_thread
 
 EXTRA_DIST = \
     EquityOption.dev \

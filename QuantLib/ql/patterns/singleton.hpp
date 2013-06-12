@@ -28,6 +28,9 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/noncopyable.hpp>
 #include <map>
+#if defined(QL_ENABLE_TSS)
+#include <boost/thread/tss.hpp>
+#endif
 
 namespace QuantLib {
 
@@ -75,6 +78,12 @@ namespace QuantLib {
 
     template <class T>
     T& Singleton<T>::instance() {
+        #if defined(QL_ENABLE_TSS)
+        static boost::thread_specific_ptr<T> tss_instance_;
+        if (!tss_instance_.get())
+           tss_instance_.reset(new T); // not active on this thread, activate
+        return *tss_instance_;
+        #else
         static std::map<Integer, boost::shared_ptr<T> > instances_;
         #if defined(QL_ENABLE_SESSIONS)
         Integer id = sessionId();
@@ -85,6 +94,7 @@ namespace QuantLib {
         if (!instance)
             instance = boost::shared_ptr<T>(new T);
         return *instance;
+        #endif
     }
 
     // reverts the change above

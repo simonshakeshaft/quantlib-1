@@ -8,7 +8,7 @@ else
 noinst_PROGRAMS = CDS
 endif
 CDS_SOURCES = CDS.cpp
-CDS_LDADD = ../../ql/libQuantLib.la
+CDS_LDADD = ../../ql/libQuantLib.la -lboost_thread
 
 EXTRA_DIST = \
     CDS.dev \
