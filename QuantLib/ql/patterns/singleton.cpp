@@ -35,6 +35,9 @@ namespace QuantLib {
 
     template <typename T>
     T& Singleton<T>::instance() {
+        // Construct on first use Idiom
+        // Avoids 'static initialisation order fiasco' - See C++ FAQ 10.14
+        // http://www.parashift.com/c++-faq/static-init-order.html
         static std::map<Integer, boost::shared_ptr<T> > instances_;
         #if defined(QL_ENABLE_SESSIONS)
         Integer id = sessionId();
